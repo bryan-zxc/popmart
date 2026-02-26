@@ -1,0 +1,348 @@
+{
+  "title": "Sales Performance Dashboard",
+  "subtitle": "Q1 2026 Overview",
+  "theme": "dark",
+  "sections": [
+    {
+      "title": "Key Performance Indicators",
+      "layout": "row",
+      "components": [
+        {
+          "type": "kpi",
+          "label": "Total Revenue",
+          "value": "$2.47M",
+          "change": "+18.3%",
+          "direction": "up",
+          "icon": "payments"
+        },
+        {
+          "type": "kpi",
+          "label": "Active Customers",
+          "value": "1,284",
+          "change": "+12.7%",
+          "direction": "up",
+          "icon": "group"
+        },
+        {
+          "type": "kpi",
+          "label": "Avg. Deal Size",
+          "value": "$1,924",
+          "change": "+4.8%",
+          "direction": "up",
+          "icon": "trending_up"
+        },
+        {
+          "type": "kpi",
+          "label": "Conversion Rate",
+          "value": "34.2%",
+          "change": "-2.1%",
+          "direction": "down",
+          "icon": "conversion_path"
+        },
+        {
+          "type": "kpi",
+          "label": "Customer LTV",
+          "value": "$8,450",
+          "change": "+22.5%",
+          "direction": "up",
+          "icon": "account_balance"
+        }
+      ]
+    },
+    {
+      "title": "Revenue Trends",
+      "layout": "full",
+      "components": [
+        {
+          "type": "chart",
+          "title": "Monthly Revenue Growth",
+          "height": 320,
+          "chart": {
+            "type": "line",
+            "data": {
+              "labels": ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+              "datasets": [
+                {
+                  "label": "2026 Revenue",
+                  "data": [720000, 780000, 850000, 920000, 950000, 1020000, 1080000, 1150000, 1200000, 1250000, 1300000, 1380000],
+                  "borderColor": "#7c8ae5",
+                  "backgroundColor": "rgba(124,138,229,0.1)",
+                  "fill": true,
+                  "tension": 0.3,
+                  "borderWidth": 2
+                },
+                {
+                  "label": "2025 Revenue",
+                  "data": [650000, 680000, 710000, 740000, 780000, 820000, 850000, 890000, 920000, 960000, 1000000, 1040000],
+                  "borderColor": "rgba(124,138,229,0.4)",
+                  "backgroundColor": "rgba(124,138,229,0.05)",
+                  "fill": true,
+                  "tension": 0.3,
+                  "borderWidth": 2,
+                  "borderDash": [5, 5]
+                }
+              ]
+            },
+            "options": {
+              "scales": {
+                "y": {
+                  "beginAtZero": true,
+                  "ticks": {
+                    "callback": "value => '$' + (value / 1000) + 'K'"
+                  }
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "title": "Performance Analysis",
+      "layout": "grid-2",
+      "components": [
+        {
+          "type": "chart",
+          "title": "Sales by Category",
+          "height": 280,
+          "chart": {
+            "type": "bar",
+            "data": {
+              "labels": ["Enterprise", "SMB", "Startup", "Education", "Government"],
+              "datasets": [
+                {
+                  "label": "Revenue",
+                  "data": [980000, 720000, 450000, 210000, 110000],
+                  "backgroundColor": [
+                    "rgba(124,138,229,0.9)",
+                    "rgba(124,138,229,0.7)",
+                    "rgba(124,138,229,0.5)",
+                    "rgba(124,138,229,0.3)",
+                    "rgba(124,138,229,0.2)"
+                  ],
+                  "borderColor": "#7c8ae5",
+                  "borderWidth": 1
+                }
+              ]
+            },
+            "options": {
+              "scales": {
+                "y": {
+                  "beginAtZero": true,
+                  "ticks": {
+                    "callback": "value => '$' + (value / 1000) + 'K'"
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "type": "chart",
+          "title": "Regional Distribution",
+          "height": 280,
+          "chart": {
+            "type": "doughnut",
+            "data": {
+              "labels": ["North America", "Europe", "Asia Pacific", "Latin America", "Middle East & Africa"],
+              "datasets": [
+                {
+                  "data": [1100000, 680000, 420000, 180000, 90000],
+                  "backgroundColor": [
+                    "rgba(124,138,229,0.9)",
+                    "rgba(124,138,229,0.7)",
+                    "rgba(124,138,229,0.5)",
+                    "rgba(124,138,229,0.3)",
+                    "rgba(124,138,229,0.2)"
+                  ],
+                  "borderColor": "#7c8ae5",
+                  "borderWidth": 2
+                }
+              ]
+            },
+            "options": {
+              "plugins": {
+                "tooltip": {
+                  "callbacks": {
+                    "label": "context => context.label + ': $' + (context.raw / 1000) + 'K'"
+                  }
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "title": "Regional Performance Breakdown",
+      "layout": "full",
+      "components": [
+        {
+          "type": "table",
+          "title": "Sales by Region",
+          "sortable": true,
+          "columns": [
+            { "key": "region", "label": "Region" },
+            { "key": "revenue", "label": "Revenue", "align": "right" },
+            { "key": "customers", "label": "Customers", "align": "right" },
+            { "key": "growth", "label": "Growth", "align": "right" },
+            { "key": "status", "label": "Status", "pill": true }
+          ],
+          "rows": [
+            {
+              "region": "North America",
+              "revenue": "$1,100,000",
+              "customers": "487",
+              "growth": "+22.4%",
+              "status": "Exceeding",
+              "status_color": "green"
+            },
+            {
+              "region": "Europe",
+              "revenue": "$680,000",
+              "customers": "312",
+              "growth": "+18.7%",
+              "status": "On Target",
+              "status_color": "green"
+            },
+            {
+              "region": "Asia Pacific",
+              "revenue": "$420,000",
+              "customers": "278",
+              "growth": "+15.2%",
+              "status": "On Target",
+              "status_color": "green"
+            },
+            {
+              "region": "Latin America",
+              "revenue": "$180,000",
+              "customers": "142",
+              "growth": "+8.3%",
+              "status": "Below Target",
+              "status_color": "amber"
+            },
+            {
+              "region": "Middle East & Africa",
+              "revenue": "$90,000",
+              "customers": "65",
+              "growth": "+5.1%",
+              "status": "Below Target",
+              "status_color": "amber"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Recent Transactions",
+      "layout": "full",
+      "components": [
+        {
+          "type": "table",
+          "title": "Latest Sales Activity",
+          "sortable": true,
+          "columns": [
+            { "key": "date", "label": "Date" },
+            { "key": "customer", "label": "Customer" },
+            { "key": "product", "label": "Product" },
+            { "key": "amount", "label": "Amount", "align": "right" },
+            { "key": "region", "label": "Region" },
+            { "key": "status", "label": "Status", "pill": true }
+          ],
+          "rows": [
+            {
+              "date": "26 Feb 2026",
+              "customer": "Acme Corporation",
+              "product": "Enterprise Suite",
+              "amount": "$45,000",
+              "region": "North America",
+              "status": "Completed",
+              "status_color": "green"
+            },
+            {
+              "date": "26 Feb 2026",
+              "customer": "Global Tech Ltd",
+              "product": "Professional Plan",
+              "amount": "$12,400",
+              "region": "Europe",
+              "status": "Completed",
+              "status_color": "green"
+            },
+            {
+              "date": "25 Feb 2026",
+              "customer": "Innovate Systems",
+              "product": "Startup Package",
+              "amount": "$8,750",
+              "region": "Asia Pacific",
+              "status": "Pending",
+              "status_color": "amber"
+            },
+            {
+              "date": "25 Feb 2026",
+              "customer": "Future Dynamics",
+              "product": "Enterprise Suite",
+              "amount": "$52,000",
+              "region": "North America",
+              "status": "Completed",
+              "status_color": "green"
+            },
+            {
+              "date": "24 Feb 2026",
+              "customer": "Digital Ventures",
+              "product": "Business Plan",
+              "amount": "$18,900",
+              "region": "Europe",
+              "status": "Completed",
+              "status_color": "green"
+            },
+            {
+              "date": "24 Feb 2026",
+              "customer": "Smart Solutions",
+              "product": "Professional Plan",
+              "amount": "$9,200",
+              "region": "Latin America",
+              "status": "Processing",
+              "status_color": "amber"
+            },
+            {
+              "date": "23 Feb 2026",
+              "customer": "Tech Pioneers",
+              "product": "Startup Package",
+              "amount": "$6,500",
+              "region": "Asia Pacific",
+              "status": "Completed",
+              "status_color": "green"
+            },
+            {
+              "date": "23 Feb 2026",
+              "customer": "Enterprise Holdings",
+              "product": "Enterprise Suite",
+              "amount": "$68,000",
+              "region": "North America",
+              "status": "Failed",
+              "status_color": "rose"
+            },
+            {
+              "date": "22 Feb 2026",
+              "customer": "Cloud Services Inc",
+              "product": "Business Plan",
+              "amount": "$22,300",
+              "region": "Europe",
+              "status": "Completed",
+              "status_color": "green"
+            },
+            {
+              "date": "22 Feb 2026",
+              "customer": "NextGen Software",
+              "product": "Professional Plan",
+              "amount": "$14,700",
+              "region": "North America",
+              "status": "Completed",
+              "status_color": "green"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

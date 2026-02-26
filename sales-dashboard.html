@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sales Performance Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+/* ── Design Tokens: Dark (default) ── */
+:root {
+  --bg: #171719;
+  --surface: #1f1f24;
+  --elevated: #26262c;
+  --border: #2a2a2f;
+  --border-subtle: #35353c;
+  --heading: #f0eff5;
+  --subheading: #c8c8d0;
+  --body: #8a8a95;
+  --muted: #6b6b78;
+  --disabled: #44444f;
+  --accent: #7c8ae5;
+  --accent-tint: rgba(124,138,229,0.1);
+  --accent-border: rgba(124,138,229,0.18);
+  --green: #5b9a7a;
+  --green-tint: rgba(91,154,122,0.1);
+  --green-border: rgba(91,154,122,0.15);
+  --amber: #e0a05f;
+  --amber-tint: rgba(224,160,95,0.12);
+  --amber-border: rgba(224,160,95,0.15);
+  --rose: #d46b6b;
+  --rose-tint: rgba(212,107,107,0.12);
+  --rose-border: rgba(212,107,107,0.15);
+  --font: 'Outfit', system-ui, sans-serif;
+  --text-xs: 11px;
+  --text-sm: 13px;
+  --text-base: 14px;
+  --text-lg: 18px;
+  --text-xl: 24px;
+  --text-2xl: 32px;
+}
+
+/* ── Design Tokens: Light ── */
+html.light {
+  --bg: #faf9f7;
+  --surface: #ffffff;
+  --elevated: #f5f4f2;
+  --border: #e8e6e3;
+  --border-subtle: #d5d3d0;
+  --heading: #1a1a1f;
+  --subheading: #4a4a55;
+  --body: #6b6b78;
+  --muted: #9a9aa5;
+  --disabled: #c0c0c8;
+  --accent: #5560c0;
+  --accent-tint: rgba(85,96,192,0.08);
+  --accent-border: rgba(85,96,192,0.15);
+  --green: #3d8a5e;
+  --green-tint: rgba(61,138,94,0.08);
+  --green-border: rgba(61,138,94,0.12);
+  --amber: #c49040;
+  --amber-tint: rgba(196,144,64,0.1);
+  --amber-border: rgba(196,144,64,0.12);
+  --rose: #c44e4e;
+  --rose-tint: rgba(196,78,78,0.08);
+  --rose-border: rgba(196,78,78,0.12);
+}
+
+/* ── Reset & Base ── */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  background: var(--bg);
+  color: var(--body);
+  font-family: var(--font);
+  font-size: var(--text-base);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Page Layout ── */
+.page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 32px 40px 64px;
+}
+
+/* ── Header ── */
+.dash-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 40px;
+}
+.dash-header-text h1 {
+  font-size: var(--text-xl);
+  font-weight: 700;
+  color: var(--heading);
+  line-height: 1.2;
+}
+.dash-header-text p {
+  font-size: var(--text-sm);
+  color: var(--muted);
+  margin-top: 4px;
+}
+.theme-toggle {
+  width: 36px; height: 36px; border-radius: 8px;
+  background: var(--surface); border: 1px solid var(--border);
+  color: var(--muted); cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; flex-shrink: 0;
+  transition: background 0.15s, color 0.15s;
+}
+.theme-toggle:hover { background: var(--elevated); color: var(--heading); }
+
+/* ── Sections ── */
+.dash-section { margin-bottom: 40px; }
+.dash-section:last-child { margin-bottom: 0; }
+.section-title {
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  margin-bottom: 16px;
+}
+.section-grid { display: grid; gap: 16px; }
+
+/* ── Layout Classes ── */
+.layout-row { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
+.layout-grid-2 { grid-template-columns: repeat(2, 1fr); }
+.layout-grid-3 { grid-template-columns: repeat(3, 1fr); }
+.layout-grid-4 { grid-template-columns: repeat(4, 1fr); }
+.layout-grid-2-wide { grid-template-columns: 2fr 1fr; }
+.layout-grid-3-wide { grid-template-columns: 2fr 1fr 1fr; }
+.layout-full { grid-template-columns: 1fr; }
+
+/* ── KPI Card ── */
+.kpi-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.kpi-top {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.kpi-icon {
+  width: 40px; height: 40px; border-radius: 10px;
+  background: var(--accent-tint);
+  border: 1px solid var(--accent-border);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.kpi-icon .material-symbols-outlined {
+  font-size: 20px; color: var(--accent); line-height: 1;
+}
+.kpi-label {
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--muted);
+}
+.kpi-value {
+  font-size: var(--text-2xl);
+  font-weight: 800;
+  color: var(--heading);
+  line-height: 1;
+}
+.kpi-change {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: var(--text-xs);
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 100px;
+  width: fit-content;
+}
+.kpi-change.up { color: var(--green); background: var(--green-tint); }
+.kpi-change.down { color: var(--rose); background: var(--rose-tint); }
+.kpi-change.neutral { color: var(--muted); background: var(--elevated); }
+
+/* ── Chart Card ── */
+.chart-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px 24px;
+}
+.chart-title {
+  font-size: var(--text-base);
+  font-weight: 600;
+  color: var(--heading);
+  margin-bottom: 16px;
+}
+.chart-canvas-wrap {
+  position: relative;
+  width: 100%;
+}
+.chart-canvas-wrap canvas {
+  width: 100% !important;
+  max-height: 280px;
+}
+
+/* ── Table Card ── */
+.table-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+.table-title {
+  font-size: var(--text-base);
+  font-weight: 600;
+  color: var(--heading);
+  padding: 20px 24px 0;
+  margin-bottom: 16px;
+}
+.table-card table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--text-base);
+}
+.table-card th {
+  text-align: left;
+  padding: 10px 16px;
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  background: var(--elevated);
+  border-bottom: 1px solid var(--border);
+  user-select: none;
+  white-space: nowrap;
+}
+.table-card th.sortable { cursor: pointer; }
+.table-card th.sortable:hover { color: var(--heading); }
+.table-card th .sort-arrow { font-size: 10px; margin-left: 4px; opacity: 0.4; }
+.table-card th.sort-active .sort-arrow { opacity: 1; color: var(--accent); }
+.table-card th.align-right, .table-card td.align-right { text-align: right; }
+.table-card td {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border);
+  color: var(--body);
+}
+.table-card tr:last-child td { border-bottom: none; }
+.table-card td:first-child { font-weight: 600; color: var(--subheading); }
+
+/* ── Status Pills ── */
+.pill {
+  display: inline-block;
+  font-size: var(--text-xs);
+  font-weight: 600;
+  padding: 2px 10px;
+  border-radius: 100px;
+}
+.pill-green { color: var(--green); background: var(--green-tint); }
+.pill-amber { color: var(--amber); background: var(--amber-tint); }
+.pill-rose { color: var(--rose); background: var(--rose-tint); }
+.pill-accent { color: var(--accent); background: var(--accent-tint); }
+
+/* ── Text Block ── */
+.text-block {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px 28px;
+}
+.text-block h3 {
+  font-size: var(--text-lg);
+  font-weight: 600;
+  color: var(--heading);
+  margin-bottom: 12px;
+}
+.text-block p {
+  font-size: var(--text-base);
+  color: var(--body);
+  line-height: 1.65;
+  margin-bottom: 8px;
+}
+.text-block p:last-child { margin-bottom: 0; }
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .page { padding: 24px 20px 48px; }
+  .layout-grid-2, .layout-grid-3, .layout-grid-4,
+  .layout-grid-2-wide, .layout-grid-3-wide {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+</style>
+</head>
+<body>
+<div class="page">
+  <header class="dash-header">
+    <div class="dash-header-text">
+      <h1 id="dashTitle"></h1>
+      <p id="dashSubtitle"></p>
+    </div>
+    <button class="theme-toggle" id="btnTheme" onclick="toggleTheme()" title="Toggle theme">&#9790;</button>
+  </header>
+  <main id="dashboard"></main>
+</div>
+
+<script>
+/* ── Data ── */
+const DATA = {"title": "Sales Performance Dashboard", "subtitle": "Q1 2026 Overview", "theme": "dark", "sections": [{"title": "Key Performance Indicators", "layout": "row", "components": [{"type": "kpi", "label": "Total Revenue", "value": "$2.47M", "change": "+18.3%", "direction": "up", "icon": "payments"}, {"type": "kpi", "label": "Active Customers", "value": "1,284", "change": "+12.7%", "direction": "up", "icon": "group"}, {"type": "kpi", "label": "Avg. Deal Size", "value": "$1,924", "change": "+4.8%", "direction": "up", "icon": "trending_up"}, {"type": "kpi", "label": "Conversion Rate", "value": "34.2%", "change": "-2.1%", "direction": "down", "icon": "conversion_path"}, {"type": "kpi", "label": "Customer LTV", "value": "$8,450", "change": "+22.5%", "direction": "up", "icon": "account_balance"}]}, {"title": "Revenue Trends", "layout": "full", "components": [{"type": "chart", "title": "Monthly Revenue Growth", "height": 320, "chart": {"type": "line", "data": {"labels": ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"], "datasets": [{"label": "2026 Revenue", "data": [720000, 780000, 850000, 920000, 950000, 1020000, 1080000, 1150000, 1200000, 1250000, 1300000, 1380000], "borderColor": "#7c8ae5", "backgroundColor": "rgba(124,138,229,0.1)", "fill": true, "tension": 0.3, "borderWidth": 2}, {"label": "2025 Revenue", "data": [650000, 680000, 710000, 740000, 780000, 820000, 850000, 890000, 920000, 960000, 1000000, 1040000], "borderColor": "rgba(124,138,229,0.4)", "backgroundColor": "rgba(124,138,229,0.05)", "fill": true, "tension": 0.3, "borderWidth": 2, "borderDash": [5, 5]}]}, "options": {"scales": {"y": {"beginAtZero": true, "ticks": {"callback": "value => '$' + (value / 1000) + 'K'"}}}}}}]}, {"title": "Performance Analysis", "layout": "grid-2", "components": [{"type": "chart", "title": "Sales by Category", "height": 280, "chart": {"type": "bar", "data": {"labels": ["Enterprise", "SMB", "Startup", "Education", "Government"], "datasets": [{"label": "Revenue", "data": [980000, 720000, 450000, 210000, 110000], "backgroundColor": ["rgba(124,138,229,0.9)", "rgba(124,138,229,0.7)", "rgba(124,138,229,0.5)", "rgba(124,138,229,0.3)", "rgba(124,138,229,0.2)"], "borderColor": "#7c8ae5", "borderWidth": 1}]}, "options": {"scales": {"y": {"beginAtZero": true, "ticks": {"callback": "value => '$' + (value / 1000) + 'K'"}}}}}}, {"type": "chart", "title": "Regional Distribution", "height": 280, "chart": {"type": "doughnut", "data": {"labels": ["North America", "Europe", "Asia Pacific", "Latin America", "Middle East & Africa"], "datasets": [{"data": [1100000, 680000, 420000, 180000, 90000], "backgroundColor": ["rgba(124,138,229,0.9)", "rgba(124,138,229,0.7)", "rgba(124,138,229,0.5)", "rgba(124,138,229,0.3)", "rgba(124,138,229,0.2)"], "borderColor": "#7c8ae5", "borderWidth": 2}]}, "options": {"plugins": {"tooltip": {"callbacks": {"label": "context => context.label + ': $' + (context.raw / 1000) + 'K'"}}}}}}]}, {"title": "Regional Performance Breakdown", "layout": "full", "components": [{"type": "table", "title": "Sales by Region", "sortable": true, "columns": [{"key": "region", "label": "Region"}, {"key": "revenue", "label": "Revenue", "align": "right"}, {"key": "customers", "label": "Customers", "align": "right"}, {"key": "growth", "label": "Growth", "align": "right"}, {"key": "status", "label": "Status", "pill": true}], "rows": [{"region": "North America", "revenue": "$1,100,000", "customers": "487", "growth": "+22.4%", "status": "Exceeding", "status_color": "green"}, {"region": "Europe", "revenue": "$680,000", "customers": "312", "growth": "+18.7%", "status": "On Target", "status_color": "green"}, {"region": "Asia Pacific", "revenue": "$420,000", "customers": "278", "growth": "+15.2%", "status": "On Target", "status_color": "green"}, {"region": "Latin America", "revenue": "$180,000", "customers": "142", "growth": "+8.3%", "status": "Below Target", "status_color": "amber"}, {"region": "Middle East & Africa", "revenue": "$90,000", "customers": "65", "growth": "+5.1%", "status": "Below Target", "status_color": "amber"}]}]}, {"title": "Recent Transactions", "layout": "full", "components": [{"type": "table", "title": "Latest Sales Activity", "sortable": true, "columns": [{"key": "date", "label": "Date"}, {"key": "customer", "label": "Customer"}, {"key": "product", "label": "Product"}, {"key": "amount", "label": "Amount", "align": "right"}, {"key": "region", "label": "Region"}, {"key": "status", "label": "Status", "pill": true}], "rows": [{"date": "26 Feb 2026", "customer": "Acme Corporation", "product": "Enterprise Suite", "amount": "$45,000", "region": "North America", "status": "Completed", "status_color": "green"}, {"date": "26 Feb 2026", "customer": "Global Tech Ltd", "product": "Professional Plan", "amount": "$12,400", "region": "Europe", "status": "Completed", "status_color": "green"}, {"date": "25 Feb 2026", "customer": "Innovate Systems", "product": "Startup Package", "amount": "$8,750", "region": "Asia Pacific", "status": "Pending", "status_color": "amber"}, {"date": "25 Feb 2026", "customer": "Future Dynamics", "product": "Enterprise Suite", "amount": "$52,000", "region": "North America", "status": "Completed", "status_color": "green"}, {"date": "24 Feb 2026", "customer": "Digital Ventures", "product": "Business Plan", "amount": "$18,900", "region": "Europe", "status": "Completed", "status_color": "green"}, {"date": "24 Feb 2026", "customer": "Smart Solutions", "product": "Professional Plan", "amount": "$9,200", "region": "Latin America", "status": "Processing", "status_color": "amber"}, {"date": "23 Feb 2026", "customer": "Tech Pioneers", "product": "Startup Package", "amount": "$6,500", "region": "Asia Pacific", "status": "Completed", "status_color": "green"}, {"date": "23 Feb 2026", "customer": "Enterprise Holdings", "product": "Enterprise Suite", "amount": "$68,000", "region": "North America", "status": "Failed", "status_color": "rose"}, {"date": "22 Feb 2026", "customer": "Cloud Services Inc", "product": "Business Plan", "amount": "$22,300", "region": "Europe", "status": "Completed", "status_color": "green"}, {"date": "22 Feb 2026", "customer": "NextGen Software", "product": "Professional Plan", "amount": "$14,700", "region": "North America", "status": "Completed", "status_color": "green"}]}]}]};
+
+/* ── Theme ── */
+let isDark = (DATA.theme || 'dark') === 'dark';
+if (!isDark) document.documentElement.classList.add('light');
+document.getElementById('btnTheme').innerHTML = isDark ? '&#9790;' : '&#9788;';
+
+const chartInstances = [];
+
+function getTokenValue(token) {
+  return getComputedStyle(document.documentElement).getPropertyValue(token).trim();
+}
+
+function toggleTheme() {
+  isDark = !isDark;
+  document.documentElement.classList.toggle('light', !isDark);
+  document.getElementById('btnTheme').innerHTML = isDark ? '&#9790;' : '&#9788;';
+  rebuildCharts();
+}
+
+/* ── Chart.js Theming ── */
+function applyChartDefaults() {
+  Chart.defaults.font.family = "'Outfit', system-ui, sans-serif";
+  Chart.defaults.font.size = 12;
+  Chart.defaults.color = getTokenValue('--muted');
+  Chart.defaults.borderColor = getTokenValue('--border');
+  Chart.defaults.plugins.tooltip.backgroundColor = getTokenValue('--elevated');
+  Chart.defaults.plugins.tooltip.titleColor = getTokenValue('--heading');
+  Chart.defaults.plugins.tooltip.bodyColor = getTokenValue('--subheading');
+  Chart.defaults.plugins.tooltip.borderColor = getTokenValue('--border');
+  Chart.defaults.plugins.tooltip.borderWidth = 1;
+  Chart.defaults.plugins.tooltip.cornerRadius = 8;
+  Chart.defaults.plugins.tooltip.padding = 10;
+  Chart.defaults.plugins.legend.labels.color = getTokenValue('--muted');
+  Chart.defaults.plugins.legend.labels.font = { family: "'Outfit', system-ui, sans-serif", size: 12 };
+}
+
+function rebuildCharts() {
+  applyChartDefaults();
+  chartInstances.forEach(({ canvas, config }) => {
+    const existing = Chart.getChart(canvas);
+    if (existing) existing.destroy();
+    new Chart(canvas, JSON.parse(JSON.stringify(config)));
+  });
+}
+
+/* ── Renderers ── */
+function renderKPI(comp) {
+  const card = document.createElement('div');
+  card.className = 'kpi-card';
+
+  const dir = comp.direction || 'neutral';
+  const arrow = dir === 'up' ? '&#9650;' : dir === 'down' ? '&#9660;' : '';
+
+  card.innerHTML = `
+    <div class="kpi-top">
+      ${comp.icon ? `<div class="kpi-icon"><span class="material-symbols-outlined">${comp.icon}</span></div>` : ''}
+      <span class="kpi-label">${comp.label || ''}</span>
+    </div>
+    <div class="kpi-value">${comp.value || ''}</div>
+    ${comp.change ? `<div class="kpi-change ${dir}">${arrow} ${comp.change}</div>` : ''}
+  `;
+  return card;
+}
+
+function renderChart(comp) {
+  const card = document.createElement('div');
+  card.className = 'chart-card';
+
+  if (comp.title) {
+    const title = document.createElement('div');
+    title.className = 'chart-title';
+    title.textContent = comp.title;
+    card.appendChild(title);
+  }
+
+  const wrap = document.createElement('div');
+  wrap.className = 'chart-canvas-wrap';
+  const canvas = document.createElement('canvas');
+  if (comp.height) canvas.style.maxHeight = comp.height + 'px';
+  wrap.appendChild(canvas);
+  card.appendChild(wrap);
+
+  if (comp.chart) {
+    const config = JSON.parse(JSON.stringify(comp.chart));
+    // Ensure responsive
+    if (!config.options) config.options = {};
+    config.options.responsive = true;
+    config.options.maintainAspectRatio = false;
+    // Store for theme rebuilds
+    chartInstances.push({ canvas, config });
+    new Chart(canvas, config);
+  }
+
+  return card;
+}
+
+function renderTable(comp) {
+  const card = document.createElement('div');
+  card.className = 'table-card';
+
+  if (comp.title) {
+    const title = document.createElement('div');
+    title.className = 'table-title';
+    title.textContent = comp.title;
+    card.appendChild(title);
+  }
+
+  const table = document.createElement('table');
+  const cols = comp.columns || [];
+  const rows = comp.rows || [];
+  let sortKey = null;
+  let sortAsc = true;
+  let currentRows = [...rows];
+
+  function buildTable() {
+    table.innerHTML = '';
+
+    // Header
+    const thead = document.createElement('thead');
+    const headerRow = document.createElement('tr');
+    cols.forEach(col => {
+      const th = document.createElement('th');
+      th.textContent = col.label || col.key;
+      if (col.align === 'right') th.classList.add('align-right');
+      if (comp.sortable) {
+        th.classList.add('sortable');
+        const arrow = document.createElement('span');
+        arrow.className = 'sort-arrow';
+        if (sortKey === col.key) {
+          th.classList.add('sort-active');
+          arrow.textContent = sortAsc ? ' \u25B2' : ' \u25BC';
+        } else {
+          arrow.textContent = ' \u25B2';
+        }
+        th.appendChild(arrow);
+        th.addEventListener('click', () => {
+          if (sortKey === col.key) { sortAsc = !sortAsc; }
+          else { sortKey = col.key; sortAsc = true; }
+          currentRows.sort((a, b) => {
+            const va = a[col.key] ?? '';
+            const vb = b[col.key] ?? '';
+            const cmp = String(va).localeCompare(String(vb), undefined, { numeric: true });
+            return sortAsc ? cmp : -cmp;
+          });
+          buildTable();
+        });
+      }
+      headerRow.appendChild(th);
+    });
+    thead.appendChild(headerRow);
+    table.appendChild(thead);
+
+    // Body
+    const tbody = document.createElement('tbody');
+    currentRows.forEach(row => {
+      const tr = document.createElement('tr');
+      cols.forEach(col => {
+        const td = document.createElement('td');
+        if (col.align === 'right') td.classList.add('align-right');
+        const val = row[col.key] ?? '';
+        if (col.pill && row[col.key + '_color']) {
+          const pill = document.createElement('span');
+          pill.className = `pill pill-${row[col.key + '_color']}`;
+          pill.textContent = val;
+          td.appendChild(pill);
+        } else {
+          td.textContent = val;
+        }
+        tr.appendChild(td);
+      });
+      tbody.appendChild(tr);
+    });
+    table.appendChild(tbody);
+  }
+
+  buildTable();
+  card.appendChild(table);
+  return card;
+}
+
+function renderText(comp) {
+  const block = document.createElement('div');
+  block.className = 'text-block';
+
+  if (comp.title) {
+    const h3 = document.createElement('h3');
+    h3.textContent = comp.title;
+    block.appendChild(h3);
+  }
+
+  const body = Array.isArray(comp.body) ? comp.body : [comp.body || ''];
+  body.forEach(text => {
+    const p = document.createElement('p');
+    p.textContent = text;
+    block.appendChild(p);
+  });
+
+  return block;
+}
+
+/* ── Component Dispatcher ── */
+const renderers = { kpi: renderKPI, chart: renderChart, table: renderTable, text: renderText };
+
+/* ── Build Dashboard ── */
+function buildDashboard() {
+  const main = document.getElementById('dashboard');
+  main.innerHTML = '';
+
+  document.getElementById('dashTitle').textContent = DATA.title || 'Dashboard';
+  document.getElementById('dashSubtitle').textContent = DATA.subtitle || '';
+
+  (DATA.sections || []).forEach(section => {
+    const sectionEl = document.createElement('div');
+    sectionEl.className = 'dash-section';
+
+    if (section.title) {
+      const title = document.createElement('div');
+      title.className = 'section-title';
+      title.textContent = section.title;
+      sectionEl.appendChild(title);
+    }
+
+    const grid = document.createElement('div');
+    grid.className = 'section-grid';
+    const layout = (section.layout || 'full').replace(/-/g, '-');
+    grid.classList.add('layout-' + layout);
+
+    (section.components || []).forEach(comp => {
+      const renderer = renderers[comp.type];
+      if (renderer) grid.appendChild(renderer(comp));
+    });
+
+    sectionEl.appendChild(grid);
+    main.appendChild(sectionEl);
+  });
+}
+
+/* ── Init ── */
+applyChartDefaults();
+buildDashboard();
+</script>
+</body>
+</html>
