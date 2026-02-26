@@ -1,70 +1,62 @@
 {
-  "title": "Sales Performance Dashboard",
-  "subtitle": "Q1 2026 Overview",
+  "title": "Melbourne Cafe Analytics Dashboard",
+  "subtitle": "Performance metrics for Q4 2025",
   "theme": "dark",
   "sections": [
     {
-      "title": "Key Performance Indicators",
+      "title": "Key Metrics",
       "layout": "row",
       "components": [
         {
           "type": "kpi",
           "label": "Total Revenue",
-          "value": "$2.47M",
-          "change": "+18.3%",
+          "value": "$1.24M",
+          "change": "+18.2%",
           "direction": "up",
           "icon": "payments"
         },
         {
           "type": "kpi",
-          "label": "Active Customers",
-          "value": "1,284",
-          "change": "+12.7%",
+          "label": "Average Daily Foot Traffic",
+          "value": "2,847",
+          "change": "+12.4%",
           "direction": "up",
           "icon": "group"
         },
         {
           "type": "kpi",
-          "label": "Avg. Deal Size",
-          "value": "$1,924",
-          "change": "+4.8%",
+          "label": "Average Order Value",
+          "value": "$14.50",
+          "change": "+5.1%",
           "direction": "up",
-          "icon": "trending_up"
+          "icon": "shopping_cart"
         },
         {
           "type": "kpi",
-          "label": "Conversion Rate",
-          "value": "34.2%",
-          "change": "-2.1%",
-          "direction": "down",
-          "icon": "conversion_path"
-        },
-        {
-          "type": "kpi",
-          "label": "Customer LTV",
-          "value": "$8,450",
-          "change": "+22.5%",
+          "label": "Customer Satisfaction",
+          "value": "4.6/5",
+          "change": "+0.2",
           "direction": "up",
-          "icon": "account_balance"
+          "icon": "star"
         }
       ]
     },
     {
-      "title": "Revenue Trends",
+      "title": "Foot Traffic Trends",
       "layout": "full",
       "components": [
         {
           "type": "chart",
-          "title": "Monthly Revenue Growth",
+          "title": "Daily Foot Traffic - October to December 2025",
           "height": 320,
           "chart": {
             "type": "line",
             "data": {
-              "labels": ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+              "labels": ["Oct 1", "Oct 8", "Oct 15", "Oct 22", "Oct 29", "Nov 5", "Nov 12", "Nov 19", "Nov 26", "Dec 3", "Dec 10", "Dec 17", "Dec 24"],
               "datasets": [
                 {
-                  "label": "2026 Revenue",
-                  "data": [720000, 780000, 850000, 920000, 950000, 1020000, 1080000, 1150000, 1200000, 1250000, 1300000, 1380000],
+                  "label": "Weekday Average",
+                  "data": [2650, 2720, 2850, 2780, 2900, 2950, 3020, 3100, 3150, 3080, 3200, 3250, 2800],
                   "borderColor": "#7c8ae5",
                   "backgroundColor": "rgba(124,138,229,0.1)",
                   "fill": true,
@@ -72,9 +64,9 @@
                   "borderWidth": 2
                 },
                 {
-                  "label": "2025 Revenue",
-                  "data": [650000, 680000, 710000, 740000, 780000, 820000, 850000, 890000, 920000, 960000, 1000000, 1040000],
-                  "borderColor": "rgba(124,138,229,0.4)",
+                  "label": "Weekend Average",
+                  "data": [3200, 3280, 3350, 3400, 3500, 3450, 3600, 3650, 3700, 3550, 3750, 3800, 3300],
+                  "borderColor": "rgba(124,138,229,0.6)",
                   "backgroundColor": "rgba(124,138,229,0.05)",
                   "fill": true,
                   "tension": 0.3,
@@ -84,12 +76,17 @@
               ]
             },
             "options": {
+              "plugins": {
+                "legend": {
+                  "display": true,
+                  "position": "top",
+                  "align": "end"
+                }
+              },
               "scales": {
                 "y": {
-                  "beginAtZero": true,
-                  "ticks": {
-                    "callback": "value => '$' + (value / 1000) + 'K'"
-                  }
+                  "beginAtZero": false,
+                  "min": 2400
                 }
               }
             }
@@ -98,40 +95,37 @@
       ]
     },
     {
-      "title": "Performance Analysis",
+      "title": "Product Performance",
       "layout": "grid-2",
       "components": [
         {
           "type": "chart",
-          "title": "Sales by Category",
-          "height": 280,
+          "title": "Top-Selling Drinks by Volume",
+          "height": 300,
           "chart": {
             "type": "bar",
             "data": {
-              "labels": ["Enterprise", "SMB", "Startup", "Education", "Government"],
+              "labels": ["Flat White", "Latte", "Cappuccino", "Long Black", "Cold Brew", "Matcha Latte", "Mocha", "Espresso"],
               "datasets": [
                 {
-                  "label": "Revenue",
-                  "data": [980000, 720000, 450000, 210000, 110000],
-                  "backgroundColor": [
-                    "rgba(124,138,229,0.9)",
-                    "rgba(124,138,229,0.7)",
-                    "rgba(124,138,229,0.5)",
-                    "rgba(124,138,229,0.3)",
-                    "rgba(124,138,229,0.2)"
-                  ],
+                  "label": "Units Sold",
+                  "data": [8450, 7820, 6920, 5640, 4880, 4320, 3950, 3210],
+                  "backgroundColor": "rgba(124,138,229,0.8)",
                   "borderColor": "#7c8ae5",
                   "borderWidth": 1
                 }
               ]
             },
             "options": {
+              "indexAxis": "y",
+              "plugins": {
+                "legend": {
+                  "display": false
+                }
+              },
               "scales": {
-                "y": {
-                  "beginAtZero": true,
-                  "ticks": {
-                    "callback": "value => '$' + (value / 1000) + 'K'"
-                  }
+                "x": {
+                  "beginAtZero": true
                 }
               }
             }
@@ -139,32 +133,97 @@
         },
         {
           "type": "chart",
-          "title": "Regional Distribution",
-          "height": 280,
+          "title": "Revenue Share by Category",
+          "height": 300,
           "chart": {
             "type": "doughnut",
             "data": {
-              "labels": ["North America", "Europe", "Asia Pacific", "Latin America", "Middle East & Africa"],
+              "labels": ["Coffee Drinks", "Food Items", "Tea & Alternatives", "Cold Beverages", "Retail Products"],
               "datasets": [
                 {
-                  "data": [1100000, 680000, 420000, 180000, 90000],
+                  "data": [48, 28, 12, 8, 4],
                   "backgroundColor": [
                     "rgba(124,138,229,0.9)",
                     "rgba(124,138,229,0.7)",
                     "rgba(124,138,229,0.5)",
                     "rgba(124,138,229,0.3)",
-                    "rgba(124,138,229,0.2)"
+                    "rgba(124,138,229,0.15)"
                   ],
-                  "borderColor": "#7c8ae5",
+                  "borderColor": "#1f1f24",
                   "borderWidth": 2
                 }
               ]
             },
             "options": {
               "plugins": {
-                "tooltip": {
-                  "callbacks": {
-                    "label": "context => context.label + ': $' + (context.raw / 1000) + 'K'"
+                "legend": {
+                  "position": "right"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "title": "Suburb Comparison",
+      "layout": "full",
+      "components": [
+        {
+          "type": "chart",
+          "title": "Performance Across Melbourne Suburbs",
+          "height": 320,
+          "chart": {
+            "type": "bar",
+            "data": {
+              "labels": ["CBD", "Fitzroy", "South Yarra", "Carlton", "St Kilda", "Richmond", "Brunswick", "Prahran"],
+              "datasets": [
+                {
+                  "label": "Revenue ($000s)",
+                  "data": [285, 242, 198, 176, 164, 152, 138, 124],
+                  "backgroundColor": "rgba(124,138,229,0.8)",
+                  "borderColor": "#7c8ae5",
+                  "borderWidth": 1,
+                  "yAxisID": "y"
+                },
+                {
+                  "label": "Avg Daily Customers",
+                  "data": [520, 445, 380, 342, 315, 298, 265, 242],
+                  "backgroundColor": "rgba(124,138,229,0.4)",
+                  "borderColor": "rgba(124,138,229,0.6)",
+                  "borderWidth": 1,
+                  "yAxisID": "y1"
+                }
+              ]
+            },
+            "options": {
+              "plugins": {
+                "legend": {
+                  "display": true,
+                  "position": "top",
+                  "align": "end"
+                }
+              },
+              "scales": {
+                "y": {
+                  "type": "linear",
+                  "display": true,
+                  "position": "left",
+                  "title": {
+                    "display": true,
+                    "text": "Revenue ($000s)"
+                  }
+                },
+                "y1": {
+                  "type": "linear",
+                  "display": true,
+                  "position": "right",
+                  "title": {
+                    "display": true,
+                    "text": "Daily Customers"
+                  },
+                  "grid": {
+                    "drawOnChartArea": false
                   }
                 }
               }
@@ -174,172 +233,92 @@
       ]
     },
     {
-      "title": "Regional Performance Breakdown",
+      "title": "Monthly Revenue Breakdown",
       "layout": "full",
       "components": [
         {
           "type": "table",
-          "title": "Sales by Region",
+          "title": "Q4 2025 Revenue by Month and Category",
           "sortable": true,
           "columns": [
-            { "key": "region", "label": "Region" },
-            { "key": "revenue", "label": "Revenue", "align": "right" },
-            { "key": "customers", "label": "Customers", "align": "right" },
-            { "key": "growth", "label": "Growth", "align": "right" },
-            { "key": "status", "label": "Status", "pill": true }
+            { "key": "month", "label": "Month" },
+            { "key": "coffee", "label": "Coffee", "align": "right" },
+            { "key": "food", "label": "Food", "align": "right" },
+            { "key": "tea", "label": "Tea & Alt", "align": "right" },
+            { "key": "cold", "label": "Cold Bev", "align": "right" },
+            { "key": "retail", "label": "Retail", "align": "right" },
+            { "key": "total", "label": "Total", "align": "right" },
+            { "key": "growth", "label": "Growth", "align": "right", "pill": true }
           ],
           "rows": [
             {
-              "region": "North America",
-              "revenue": "$1,100,000",
-              "customers": "487",
-              "growth": "+22.4%",
-              "status": "Exceeding",
-              "status_color": "green"
+              "month": "October",
+              "coffee": "$184,320",
+              "food": "$107,520",
+              "tea": "$46,080",
+              "cold": "$30,720",
+              "retail": "$15,360",
+              "total": "$384,000",
+              "growth": "+14.2%",
+              "growth_color": "green"
             },
             {
-              "region": "Europe",
-              "revenue": "$680,000",
-              "customers": "312",
-              "growth": "+18.7%",
-              "status": "On Target",
-              "status_color": "green"
+              "month": "November",
+              "coffee": "$201,600",
+              "food": "$117,600",
+              "tea": "$50,400",
+              "cold": "$33,600",
+              "retail": "$16,800",
+              "total": "$420,000",
+              "growth": "+18.9%",
+              "growth_color": "green"
             },
             {
-              "region": "Asia Pacific",
-              "revenue": "$420,000",
-              "customers": "278",
-              "growth": "+15.2%",
-              "status": "On Target",
-              "status_color": "green"
+              "month": "December",
+              "coffee": "$209,280",
+              "food": "$122,080",
+              "tea": "$52,320",
+              "cold": "$34,880",
+              "retail": "$17,440",
+              "total": "$436,000",
+              "growth": "+20.3%",
+              "growth_color": "green"
             },
             {
-              "region": "Latin America",
-              "revenue": "$180,000",
-              "customers": "142",
-              "growth": "+8.3%",
-              "status": "Below Target",
-              "status_color": "amber"
-            },
-            {
-              "region": "Middle East & Africa",
-              "revenue": "$90,000",
-              "customers": "65",
-              "growth": "+5.1%",
-              "status": "Below Target",
-              "status_color": "amber"
+              "month": "Q4 Total",
+              "coffee": "$595,200",
+              "food": "$347,200",
+              "tea": "$148,800",
+              "cold": "$99,200",
+              "retail": "$49,600",
+              "total": "$1,240,000",
+              "growth": "+18.2%",
+              "growth_color": "green"
             }
           ]
         }
       ]
     },
     {
-      "title": "Recent Transactions",
-      "layout": "full",
+      "title": "Performance Insights",
+      "layout": "grid-2",
       "components": [
         {
-          "type": "table",
-          "title": "Latest Sales Activity",
-          "sortable": true,
-          "columns": [
-            { "key": "date", "label": "Date" },
-            { "key": "customer", "label": "Customer" },
-            { "key": "product", "label": "Product" },
-            { "key": "amount", "label": "Amount", "align": "right" },
-            { "key": "region", "label": "Region" },
-            { "key": "status", "label": "Status", "pill": true }
-          ],
-          "rows": [
-            {
-              "date": "26 Feb 2026",
-              "customer": "Acme Corporation",
-              "product": "Enterprise Suite",
-              "amount": "$45,000",
-              "region": "North America",
-              "status": "Completed",
-              "status_color": "green"
-            },
-            {
-              "date": "26 Feb 2026",
-              "customer": "Global Tech Ltd",
-              "product": "Professional Plan",
-              "amount": "$12,400",
-              "region": "Europe",
-              "status": "Completed",
-              "status_color": "green"
-            },
-            {
-              "date": "25 Feb 2026",
-              "customer": "Innovate Systems",
-              "product": "Startup Package",
-              "amount": "$8,750",
-              "region": "Asia Pacific",
-              "status": "Pending",
-              "status_color": "amber"
-            },
-            {
-              "date": "25 Feb 2026",
-              "customer": "Future Dynamics",
-              "product": "Enterprise Suite",
-              "amount": "$52,000",
-              "region": "North America",
-              "status": "Completed",
-              "status_color": "green"
-            },
-            {
-              "date": "24 Feb 2026",
-              "customer": "Digital Ventures",
-              "product": "Business Plan",
-              "amount": "$18,900",
-              "region": "Europe",
-              "status": "Completed",
-              "status_color": "green"
-            },
-            {
-              "date": "24 Feb 2026",
-              "customer": "Smart Solutions",
-              "product": "Professional Plan",
-              "amount": "$9,200",
-              "region": "Latin America",
-              "status": "Processing",
-              "status_color": "amber"
-            },
-            {
-              "date": "23 Feb 2026",
-              "customer": "Tech Pioneers",
-              "product": "Startup Package",
-              "amount": "$6,500",
-              "region": "Asia Pacific",
-              "status": "Completed",
-              "status_color": "green"
-            },
-            {
-              "date": "23 Feb 2026",
-              "customer": "Enterprise Holdings",
-              "product": "Enterprise Suite",
-              "amount": "$68,000",
-              "region": "North America",
-              "status": "Failed",
-              "status_color": "rose"
-            },
-            {
-              "date": "22 Feb 2026",
-              "customer": "Cloud Services Inc",
-              "product": "Business Plan",
-              "amount": "$22,300",
-              "region": "Europe",
-              "status": "Completed",
-              "status_color": "green"
-            },
-            {
-              "date": "22 Feb 2026",
-              "customer": "NextGen Software",
-              "product": "Professional Plan",
-              "amount": "$14,700",
-              "region": "North America",
-              "status": "Completed",
-              "status_color": "green"
-            }
+          "type": "text",
+          "title": "Key Findings",
+          "body": [
+            "The CBD location continues to outperform all other suburbs with 23% higher revenue than the next best performer. Weekend foot traffic shows consistent 15-20% increases across all locations.",
+            "Flat White remains the top-selling drink, representing 19% of all coffee sales. Cold brew and matcha lattes show the strongest growth trajectory, up 34% and 28% respectively quarter-over-quarter.",
+            "December performance exceeded projections by 8%, driven primarily by increased weekend traffic and higher average order values during the holiday season."
+          ]
+        },
+        {
+          "type": "text",
+          "title": "Recommendations",
+          "body": [
+            "Expand cold brew and specialty drink offerings, particularly in high-traffic locations like CBD and Fitzroy where demand for premium beverages is strongest.",
+            "Consider optimizing staffing levels on weekends when foot traffic peaks, ensuring service quality remains consistent during high-volume periods.",
+            "Investigate opportunities to increase average order value in lower-performing suburbs through bundled offerings and loyalty program enhancements."
           ]
         }
       ]
