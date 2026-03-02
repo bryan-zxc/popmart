@@ -1,14 +1,14 @@
-# Popmart Vinyl Vault
+# Vinyl Vault
 
-Keep every vinyl figure safe, organized, and easy to find — Popmart Vinyl Vault is a dedicated storage solution for your growing Popmart collection. Catalog each piece by series, size, and shelf location, so you always know exactly where your favorites live and how much room you have left.
+Your personal vinyl record collection, organized and always at your fingertips. Vinyl Vault helps collectors catalog every LP, EP, and single they own — tracking artist, album, pressing details, and condition so nothing gets lost in the stacks.
 
 ## Features
 
-- **Collection catalog** — Log each figure with series name, character, variant, and condition.
-- **Wishlist management** — Track which pieces you're still hunting for.
-- **Duplicate tracking** — Identify extras available for trade or sale.
-- **Series completion** — See at a glance how close you are to completing each series.
-- **Collection stats** — View totals, rarity breakdowns, and collection value estimates.
+- **Record catalog** — Log each record with artist, album title, label, release year, format, and condition.
+- **Wishlist** — Keep a running list of records you're hunting for at shops and online.
+- **Duplicate detection** — Spot duplicate pressings so you know what's available for trade or sale.
+- **Collection stats** — View totals by genre, decade, format, and estimated collection value.
+- **Discography tracking** — See how close you are to completing an artist's full discography.
 
 ## Tech Stack
 
@@ -29,7 +29,7 @@ Keep every vinyl figure safe, organized, and easy to find — Popmart Vinyl Vaul
 1. Clone the repository:
    ```bash
    git clone <repo-url>
-   cd popmart-vinyl-vault
+   cd vinyl-vault
    ```
 
 2. Install dependencies:
@@ -41,7 +41,7 @@ Keep every vinyl figure safe, organized, and easy to find — Popmart Vinyl Vaul
    ```bash
    cp .env.example .env
    ```
-   Edit `.env` to set any custom configuration such as the database path or port number.
+   Edit `.env` to set any custom configuration such as the database connection string or server port.
 
 4. Start the application:
    ```bash
@@ -59,7 +59,7 @@ npm test
 
 ## Contributing
 
-We welcome contributions! Please open an issue or submit a pull request if you'd like to help improve the tracker.
+Contributions are welcome! Please open an issue or submit a pull request if you'd like to help improve Vinyl Vault.
 
 ## License
 
