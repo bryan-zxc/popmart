@@ -1,24 +1,34 @@
-Last updated by Zimomo
-Testing git operations
+# Popmart Collection Tracker
+
+A tool for tracking and managing your Popmart figurine collection. Catalog your blind boxes, trade duplicates, and keep tabs on your growing lineup of collectible art toys.
+
+## Features
+
+- **Collection catalog** — Log each figure with series name, character, variant, and condition.
+- **Wishlist management** — Track which pieces you're still hunting for.
+- **Duplicate tracking** — Identify extras available for trade or sale.
+- **Series completion** — See at a glance how close you are to completing each series.
+- **Collection stats** — View totals, rarity breakdowns, and collection value estimates.
+
+## Getting Started
+
+1. Clone the repository:
+   ```
+   git clone <repo-url>
+   ```
+2. Install dependencies:
+   ```
+   npm install
+   ```
+3. Start the application:
+   ```
+   npm start
+   ```
 
 ## Contributing
 
-We welcome contributions! Here's how to submit a pull request:
+We welcome contributions! Please open an issue or submit a pull request if you'd like to help improve the tracker.
 
-1. **Fork the repository** and clone it locally.
-2. **Create a branch** from `main` for your changes:
-   ```
-   git checkout -b your-feature-branch
-   ```
-3. **Make your changes.** Keep commits focused and write clear commit messages.
-4. **Test your changes** to make sure nothing is broken.
-5. **Push your branch** to your fork:
-   ```
-   git push origin your-feature-branch
-   ```
-6. **Open a pull request** against `main`. In your PR description:
-   - Summarize what the change does and why.
-   - Reference any related issues (e.g., `Fixes #42`).
-7. **Respond to review feedback.** A maintainer will review your PR and may request changes.
+## License
 
-Once approved, your PR will be merged. Thank you for contributing!
+This project is open source. See the [LICENSE](LICENSE) file for details.
