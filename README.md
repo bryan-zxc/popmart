@@ -1,6 +1,6 @@
-# Popmart Collection Tracker
+# Popmart Blind Box Manager
 
-A tool for tracking and managing your Popmart figurine collection. Catalog your blind boxes, trade duplicates, and keep tabs on your growing lineup of collectible art toys.
+Tear open the seal, hold your breath, and discover who's inside — Popmart Blind Box Manager captures the thrill of every unboxing moment. Track each surprise pull, relive the suspense of chasing secret figures, and build the story of your collection one mystery box at a time.
 
 ## Features
 
