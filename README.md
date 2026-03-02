@@ -12,18 +12,43 @@ Keep every vinyl figure safe, organized, and easy to find — Popmart Vinyl Vaul
 
 ## Getting Started
 
+### Prerequisites
+
+- [Node.js](https://nodejs.org/) (v16 or later)
+- npm (included with Node.js)
+
+### Setup
+
 1. Clone the repository:
-   ```
+   ```bash
    git clone <repo-url>
+   cd popmart-vinyl-vault
    ```
+
 2. Install dependencies:
-   ```
+   ```bash
    npm install
    ```
-3. Start the application:
+
+3. Configure the application (optional):
+   ```bash
+   cp .env.example .env
    ```
+   Edit `.env` to set any custom configuration such as the database path or port number.
+
+4. Start the application:
+   ```bash
    npm start
    ```
+
+The application will be available at `http://localhost:3000` by default.
+
+### Verifying Your Setup
+
+Run the test suite to confirm everything is working:
+```bash
+npm test
+```
 
 ## Contributing
 
