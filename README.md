@@ -10,6 +10,13 @@ Keep every vinyl figure safe, organized, and easy to find — Popmart Vinyl Vaul
 - **Series completion** — See at a glance how close you are to completing each series.
 - **Collection stats** — View totals, rarity breakdowns, and collection value estimates.
 
+## Tech Stack
+
+- **Node.js** — Server-side runtime
+- **Python** — Data processing and scripting
+- **PostgreSQL** — Primary relational database
+- **Redis** — Caching and session management
+
 ## Getting Started
 
 1. Clone the repository:
