@@ -1,6 +1,6 @@
-# Popmart Blind Box Manager
+# Popmart Vinyl Vault
 
-Tear open the seal, hold your breath, and discover who's inside — Popmart Blind Box Manager captures the thrill of every unboxing moment. Track each surprise pull, relive the suspense of chasing secret figures, and build the story of your collection one mystery box at a time.
+Keep every vinyl figure safe, organized, and easy to find — Popmart Vinyl Vault is a dedicated storage solution for your growing Popmart collection. Catalog each piece by series, size, and shelf location, so you always know exactly where your favorites live and how much room you have left.
 
 ## Features
 
