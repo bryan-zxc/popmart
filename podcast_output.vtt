@@ -1,0 +1,34 @@
+WEBVTT
+
+1
+00:00:00.000 --> 00:00:05.616
+<v Tom>So Bryan, what is an agentic productivity tool, and how is that different to something like ChatGPT?
+
+2
+00:00:06.416 --> 00:00:56.984
+<v Bryan>So a traditional chatbot like ChatGPT is essentially a really smart conversation partner — you ask it something, it gives you an answer, you ask a follow-up, it responds again. It's reactive. You're driving the whole time. An agentic productivity tool flips that on its head. Instead of just answering questions, it can actually do things. You give it a goal — like "analyse these expenses and flag anything unusual" or "build me a presentation pack for the board meeting" — and it goes off, breaks that down into steps, uses tools, reads files, writes content, searches the web, and comes back with the finished result. The key difference is autonomy. ChatGPT is like texting a really knowledgeable mate. An agentic tool is more like handing a task to a junior colleague who can actually open your files, crunch the numbers, and submit the work. It's the difference between getting advice and getting things done.
+
+3
+00:00:57.784 --> 00:01:03.208
+<v Tom>What do you think is the impact of AI to the world, especially how it impacts us in professional services?
+
+4
+00:01:04.008 --> 00:02:16.944
+<v Bryan>That's a big one. I think the impact is going to be massive, and honestly, we're only at the very beginning of it. The way I see it, what's happening right now with AI is a revolution on the same scale as the industrial revolution or the dot com boom. Think about it this way — this is like when people were writing debits and credits on paper, and then one day someone walked into the room with a computer. It's really difficult to come to grips with what it is, how to use it, and what's even possible. But the computer is here. You either figure out how to use it, or you become obsolete. Now, that might sound scary, but the reality is — we live in an era that is post machines taking over the world, post computers taking over the world, post the world wide web taking over the world. And do we have no jobs left? No. Professional services at the end of the day is about solving problems. Sure, some problems become obsolete because of AI, but AI is also creating a whole plethora of new problems and opportunities that were never imagined before. We continue to be useful problem solvers, but the entire foundation of how we solve problems needs to be reimagined and re-understood. The dangerous thing to do is to grasp onto the pen and hope that computers won't become common before you retire — especially when AI is changing the world on an annual basis, sometimes multiple times a year. That's not a bet you want to make.
+
+5
+00:02:17.744 --> 00:02:32.888
+<v Tom>If I think about the stack that I use — Outlook, SQL, PowerPoint, ChatGPT, Word, Python, Excel, Power BI, Tableau — how will agentic productivity tools change the average analyst's day?
+
+6
+00:02:33.688 --> 00:04:21.856
+<v Bryan>The first mistake is to think this only impacts analysts. The impact is from grad to partner, and it doesn't get smaller as the rank gets higher. I estimate that ninety percent of your day to day will be reformed at every level, without exception. Why do I say this? The productivity difference between using AI and not is measured on a Richter scale. It is so overpowering that as soon as we start using it, we will start making decisions around the tool — this including our fundamental ways of working alongside our entire tool ecosystem. Everything will be reimagined and redesigned. Starting from the things that are familiar — we will largely start divorcing ourselves from the Microsoft stack. Word will be replaced with markdown files. PowerPoint will be replaced with HTML files. Excel will be replaced with parquets, CSVs, JSON, HTML. Power BI and Tableau will be replaced by Python or JavaScript libraries. Outlook won't go, but the way we interact with Outlook will be quite different. AI will connect to your mailbox and take care of housekeeping activities, assist you with response drafting, and more importantly, collate information in a discoverable form in your project repo. And taking a step beyond that — immediately change your analysis code based on client responses to data questions. Within about ten minutes your entire analysis outcome from end to end, including your presentation pack, is updated. And the change doesn't end there. Imagine if doing your timesheets is just saying "do my timesheets." Imagine if daily stand-ups become obsolete because anyone can ask at any time what the team's progress is and get an answer that allows you to dig to incredibly high levels of detail if required — without needing any human to reply in the process. And all of this that I'm saying is not coming in a year's time, not coming in six months, but something I can show next week in a personal project I've squeezed out of my spare time in the past two weeks.
+
+7
+00:04:22.656 --> 00:04:26.592
+<v Tom>How can people best come up to speed and start their journey with these productivity tools?
+
+8
+00:04:27.391 --> 00:05:16.567
+<v Bryan>Good news — we have managed to wire up Claude Code with our Deloitte LLM gateway. We are currently going through the final steps of our due diligence process to be able to use it on client engagements under guidelines. Having said that, we already have eight early adopters who have installed Claude Code and are using it for non-client use cases. If you're interested, message me on Teams and I'll add you to the group. If you can wait about a week, you probably won't need to go through the complex installation and setup process at all — we will probably have a first-cut Docker image with everything already set up and installed. Once the tool is available, the key is just to start using it and experiencing it for yourself. The entry barrier is incredibly low. In particular, try the skills the team has already built and familiarise yourself with that feature — it will be quite a critical and prominent feature in our ways of working evolution.
+
