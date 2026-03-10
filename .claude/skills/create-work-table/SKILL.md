@@ -66,33 +66,24 @@ Also propose SQL-friendly column names: lowercase, alphanumeric and underscores 
 
 Generate an interactive HTML page where the user can review and adjust the type mapping in the browser, then approve it with a single click.
 
-1. **Read workload metadata** to get the chat ID:
-   ```python
-   import json
-   from pathlib import Path
-   workload = json.loads(Path(".team-agent/workload.json").read_text())
-   chat_id = workload["chat_id"]
-   ```
+1. **Read the HTML template** from `.claude/skills/create-work-table/assets/type-review-template.html`
 
-2. **Read the HTML template** from `.claude/skills/create-work-table/assets/type-review-template.html`
-
-3. **Substitute placeholders** in the template with actual data:
+2. **Substitute placeholders** in the template with actual data:
    - `{{TABLE_NAME}}` — the `l10wrk_<tablename>` table name (string)
    - `{{COLUMN_DATA}}` — a JSON array of objects, each with `original`, `sql_name`, `recommended` (SQL type), and `classification` keys. Example: `[{"original": "Customer ID", "sql_name": "customer_id", "recommended": "INTEGER", "classification": "categorical"}]`
    - `{{SAMPLE_ROWS}}` — the `sample_rows` array from step 2 output (arrays of string values)
    - `{{TOTAL_ROWS}}` — total row count (integer, from `total_rows` in step 2 output)
    - `{{TOTAL_COLS}}` — number of columns (integer)
-   - `{{CHAT_ID}}` — the chat ID from workload metadata
 
-4. **Write the review file** to `data/reviews/<table_name>.html` (create the `data/reviews/` directory if needed)
+3. **Write the review file** to `data/reviews/<table_name>.html` (create the `data/reviews/` directory if needed)
 
-5. **Commit** the review file. The link in the next step only works if the file has been committed — the application's file browser only shows committed files. No push is required.
+4. **Commit** the review file. The link in the next step only works if the file has been committed — the application's file browser only shows committed files. No push is required.
 
-6. **Send a link in chat**: `[Review type mapping for <table_name>](data/reviews/<table_name>.html)`
+5. **Send a link in chat**: `[Review type mapping for <table_name>](data/reviews/<table_name>.html)`
 
-7. **Wait for the user's response.** The user opens the link in the workbench, sees an interactive table with editable SQL names, type dropdowns, classification dropdowns, and 100 rows of sample data. When they click Approve, the page posts the finalised JSON back into this chat as a message, which arrives as a follow-up to you.
+6. **Wait for the user's response.** The user opens the link in the workbench, sees an interactive table with editable SQL names, type dropdowns, classification dropdowns, and 100 rows of sample data. When they click Approve, the page posts the finalised JSON back into this chat as a message, which arrives as a follow-up to you.
 
-8. **Parse the approved JSON** from the follow-up message. The message contains a JSON code block with the structure:
+7. **Parse the approved JSON** from the follow-up message. The message contains a JSON code block with the structure:
    ```json
    {"status": "approved", "table_name": "...", "columns": [{"original": "...", "sql_name": "...", "recommended": "...", "classification": "..."}, ...]}
    ```

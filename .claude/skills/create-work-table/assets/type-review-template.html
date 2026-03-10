@@ -21,7 +21,6 @@
     --mono: 'SF Mono', 'Cascadia Code', 'Consolas', monospace;
     --input-bg: #f8f8fa;
     --stripe: #fafafc;
-    --toggle-bg: #e0e0e5;
   }
 
   [data-theme="dark"] {
@@ -38,7 +37,6 @@
     --green-hover: #16a34a;
     --input-bg: #22223a;
     --stripe: #161628;
-    --toggle-bg: #2a2a44;
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -258,8 +256,15 @@
   .approved-banner .check { color: var(--green); font-size: 20px; }
   .approved-banner p { font-size: 13px; color: var(--text); }
 
-  .approved-json {
+  .json-output {
     display: none;
+    position: relative;
+    margin-top: 16px;
+  }
+
+  .json-output.visible { display: block; }
+
+  .json-output pre {
     background: var(--surface);
     border: 1px solid var(--border);
     border-radius: 10px;
@@ -269,44 +274,31 @@
     color: var(--text-muted);
     overflow-x: auto;
     white-space: pre;
-    margin-top: 16px;
   }
 
-  .approved-json.visible { display: block; }
-
-  .theme-toggle {
-    background: var(--toggle-bg);
+  .copy-btn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: var(--surface-hover);
     border: 1px solid var(--border);
     border-radius: 6px;
     padding: 4px 10px;
     cursor: pointer;
-    font-size: 14px;
-    color: var(--text);
+    font-size: 12px;
+    color: var(--text-muted);
     transition: background 0.15s, border-color 0.15s;
-    line-height: 1;
   }
 
-  .theme-toggle:hover { border-color: var(--accent); }
-
-  .header-row {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: 16px;
-  }
+  .copy-btn:hover { border-color: var(--accent); color: var(--text); }
 </style>
 </head>
 <body>
 
 <div class="header">
-  <div class="header-row">
-    <div>
-      <h1 id="page-title">Type Review</h1>
-      <p class="subtitle">Review column types and classifications, then click Approve to proceed with ingestion.</p>
-      <p class="stats" id="stats-line"></p>
-    </div>
-    <button class="theme-toggle" onclick="toggleTheme()" title="Toggle light/dark mode">☀️</button>
-  </div>
+  <h1 id="page-title">Type Review</h1>
+  <p class="subtitle">Review column types and classifications, then click Approve to proceed with ingestion.</p>
+  <p class="stats" id="stats-line"></p>
 </div>
 
 <div id="approved-banner" class="approved-banner">
@@ -328,7 +320,10 @@
   <span class="footer-hint">Adjust any fields above, then click Approve to confirm the type mapping.</span>
 </div>
 
-<pre id="approved-json" class="approved-json"></pre>
+<div id="json-output" class="json-output">
+  <button class="copy-btn" onclick="copyJson()">Copy</button>
+  <pre id="json-content"></pre>
+</div>
 
 <script>
 // ── Data injected by the create-work-table skill ──
@@ -337,7 +332,9 @@ const COLUMN_DATA = {{COLUMN_DATA}};
 const SAMPLE_ROWS = {{SAMPLE_ROWS}};
 const TOTAL_ROWS = {{TOTAL_ROWS}};
 const TOTAL_COLS = {{TOTAL_COLS}};
-const CHAT_ID = "{{CHAT_ID}}";
+
+// Chat ID is injected at runtime by the parent iframe host via postMessage
+let chatId = null;
 
 const SQL_TYPES = ["VARCHAR", "INTEGER", "BIGINT", "DOUBLE", "DECIMAL", "BOOLEAN", "DATE", "TIMESTAMP"];
 const CLASSIFICATIONS = ["categorical", "numeric", "date"];
@@ -382,7 +379,7 @@ function buildTable() {
   }).join("");
   thead.appendChild(tr);
 
-  // Purple separator
+  // Accent separator
   tr = document.createElement("tr");
   tr.className = "separator";
   tr.innerHTML = `<td colspan="${COLUMN_DATA.length + 1}"></td>`;
@@ -406,6 +403,8 @@ function markInputChanged(input) {
   td.classList.toggle("changed", input.value !== input.dataset.original);
 }
 
+let approvedJsonStr = null;
+
 async function handleApprove() {
   const result = COLUMN_DATA.map((c, i) => {
     const sqlInput = document.querySelector(`input.sql-input[data-col="${i}"]`);
@@ -420,22 +419,22 @@ async function handleApprove() {
   });
 
   const output = { status: "approved", table_name: TABLE_NAME, columns: result };
-  const jsonStr = JSON.stringify(output, null, 2);
+  approvedJsonStr = JSON.stringify(output, null, 2);
 
   // Show inline JSON and disable controls
   document.getElementById("footer").style.display = "none";
   document.querySelectorAll("select").forEach(s => s.disabled = true);
   document.querySelectorAll("input.sql-input").forEach(s => s.disabled = true);
 
-  const jsonEl = document.getElementById("approved-json");
-  jsonEl.textContent = jsonStr;
-  jsonEl.classList.add("visible");
+  const jsonOutput = document.getElementById("json-output");
+  document.getElementById("json-content").textContent = approvedJsonStr;
+  jsonOutput.classList.add("visible");
 
-  // Post approval message back to the chat
-  if (CHAT_ID && CHAT_ID !== "{{CHAT_ID}}") {
-    const text = `Type mapping approved for \`${TABLE_NAME}\`.\n\`\`\`json\n${jsonStr}\n\`\`\``;
+  // Post approval message back to the chat if we have a chatId
+  if (chatId) {
+    const text = `Type mapping approved for \`${TABLE_NAME}\`.\n\`\`\`json\n${approvedJsonStr}\n\`\`\``;
     try {
-      const resp = await fetch(`/chats/${CHAT_ID}/messages`, {
+      const resp = await fetch(`/chats/${chatId}/messages`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
@@ -464,27 +463,21 @@ async function handleApprove() {
   document.getElementById("approved-banner").classList.add("visible");
 }
 
-// ── Theme ──
-function toggleTheme() {
-  const html = document.documentElement;
-  const isDark = html.getAttribute("data-theme") === "dark";
-  if (isDark) {
-    html.removeAttribute("data-theme");
-    document.querySelector(".theme-toggle").textContent = "\u2600\uFE0F";
-  } else {
-    html.setAttribute("data-theme", "dark");
-    document.querySelector(".theme-toggle").textContent = "\uD83C\uDF19";
-  }
-  updateSelectArrows();
+function copyJson() {
+  if (!approvedJsonStr) return;
+  navigator.clipboard.writeText(approvedJsonStr).then(() => {
+    const btn = document.querySelector(".copy-btn");
+    btn.textContent = "Copied!";
+    setTimeout(() => { btn.textContent = "Copy"; }, 2000);
+  });
 }
 
+// ── Theme (controlled by parent) ──
 function applyTheme(theme) {
   if (theme === "dark") {
     document.documentElement.setAttribute("data-theme", "dark");
-    document.querySelector(".theme-toggle").textContent = "\uD83C\uDF19";
   } else {
     document.documentElement.removeAttribute("data-theme");
-    document.querySelector(".theme-toggle").textContent = "\u2600\uFE0F";
   }
   updateSelectArrows();
 }
@@ -493,13 +486,16 @@ function updateSelectArrows() {
   const colour = getComputedStyle(document.documentElement).getPropertyValue("--text-muted").trim();
   const encoded = encodeURIComponent(colour);
   const svg = `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='${encoded}' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E")`;
-  document.querySelectorAll("select").forEach(s => s.style.backgroundImage = svg);
+  document.querySelectorAll("select:not(:disabled)").forEach(s => s.style.backgroundImage = svg);
 }
 
-// Listen for theme messages from the parent FileTab iframe host
+// Listen for messages from the parent FileTab iframe host
 window.addEventListener("message", (e) => {
   if (e.data && e.data.type === "theme") {
     applyTheme(e.data.theme);
+  }
+  if (e.data && e.data.type === "context" && e.data.chatId) {
+    chatId = e.data.chatId;
   }
 });
 
