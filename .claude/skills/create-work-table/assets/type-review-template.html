@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Type Review — {{TABLE_NAME}}</title>
+<title>Type Review</title>
 <style>
   :root {
     --bg: #f5f5f7;
@@ -325,13 +325,15 @@
   <pre id="json-content"></pre>
 </div>
 
+<script id="review-data" type="application/json">{{REVIEW_DATA}}</script>
 <script>
-// ── Data injected by the create-work-table skill ──
-const TABLE_NAME = "{{TABLE_NAME}}";
-const COLUMN_DATA = {{COLUMN_DATA}};
-const SAMPLE_ROWS = {{SAMPLE_ROWS}};
-const TOTAL_ROWS = {{TOTAL_ROWS}};
-const TOTAL_COLS = {{TOTAL_COLS}};
+// ── Parse injected data ──
+const _d = JSON.parse(document.getElementById("review-data").textContent);
+const TABLE_NAME = _d.table_name;
+const COLUMN_DATA = _d.columns;
+const SAMPLE_ROWS = _d.sample_rows;
+const TOTAL_ROWS = _d.total_rows;
+const TOTAL_COLS = _d.total_cols;
 
 // Chat ID is injected at runtime by the parent iframe host via postMessage
 let chatId = null;

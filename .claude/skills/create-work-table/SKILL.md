@@ -68,12 +68,21 @@ Generate an interactive HTML page where the user can review and adjust the type 
 
 1. **Read the HTML template** from `.claude/skills/create-work-table/assets/type-review-template.html`
 
-2. **Substitute placeholders** in the template with actual data:
-   - `{{TABLE_NAME}}` — the `l10wrk_<tablename>` table name (string)
-   - `{{COLUMN_DATA}}` — a JSON array of objects, each with `original`, `sql_name`, `recommended` (SQL type), and `classification` keys. Example: `[{"original": "Customer ID", "sql_name": "customer_id", "recommended": "INTEGER", "classification": "categorical"}]`
-   - `{{SAMPLE_ROWS}}` — the `sample_rows` array from step 2 output (arrays of string values)
-   - `{{TOTAL_ROWS}}` — total row count (integer, from `total_rows` in step 2 output)
-   - `{{TOTAL_COLS}}` — number of columns (integer)
+2. **Build the review data JSON** and substitute it into the template. The template has a single placeholder `{{REVIEW_DATA}}` inside a `<script type="application/json">` tag. Prepare a JSON object with these keys and use Python `str.replace` to inject it:
+
+   ```python
+   import json
+   review_data = {
+       "table_name": "l10wrk_<tablename>",
+       "columns": [{"original": "Customer ID", "sql_name": "customer_id", "recommended": "INTEGER", "classification": "categorical"}, ...],
+       "sample_rows": sample_output["sample_rows"],  # from step 2
+       "total_rows": sample_output["total_rows"],     # from step 2
+       "total_cols": len(columns)
+   }
+   html = template.replace("{{REVIEW_DATA}}", json.dumps(review_data))
+   ```
+
+   **Important:** Do not modify any JavaScript code in the template — only replace the `{{REVIEW_DATA}}` placeholder. The JS reads from the JSON block at runtime.
 
 3. **Write the review file** to `data/reviews/<table_name>.html` (create the `data/reviews/` directory if needed)
 
