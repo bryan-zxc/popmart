@@ -367,6 +367,53 @@ function processData(manifest, resourcing, forecast) {
 
     return entry;
   });
+
+  // Add forecast-only members (people in forecast.json but not yet in the project)
+  var knownNames = new Set(data.map(function(d) { return d.name; }));
+  var fcMembers = forecast.members || {};
+  Object.keys(fcMembers).forEach(function(name) {
+    if (knownNames.has(name)) return;
+    var fc = fcMembers[name];
+    var fcDaily = fc.daily || {};
+    // Detect type: human values are ≤7.5, agent values are 100
+    var sampleVal = 0;
+    for (var k in fcDaily) { if (fcDaily[k] > 0) { sampleVal = fcDaily[k]; break; } }
+    var isAi = sampleVal > 50;
+
+    var entry = {
+      id: 'forecast-' + name,
+      name: name,
+      initial: name.charAt(0).toUpperCase(),
+      type: isAi ? 'ai' : 'human',
+      rate: 0,
+      margin: isAi ? 200 : 30,
+      wf: [], wa: [], df: [], da: [],
+      forecastOnly: true,
+    };
+
+    for (let wi = 0; wi < weeks.length; wi++) {
+      var wk = weeks[wi];
+      var dailyForecast = [];
+      var weekForecast = 0;
+      var hasAnyForecast = false;
+      for (let d = 0; d < 5; d++) {
+        var fVal = fcDaily[wk.days[d].date];
+        if (fVal !== undefined) {
+          dailyForecast.push(fVal);
+          weekForecast += fVal;
+          hasAnyForecast = true;
+        } else {
+          dailyForecast.push(null);
+        }
+      }
+      entry.wf.push(hasAnyForecast ? weekForecast : null);
+      entry.df.push(dailyForecast);
+      entry.wa.push(0);
+      entry.da.push([0, 0, 0, 0, 0]);
+    }
+
+    data.push(entry);
+  });
 }
 
 // ── Rendering (same as approved mockup) ──
