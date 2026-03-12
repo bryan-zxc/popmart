@@ -24,11 +24,12 @@ output_path = f"/data/projects/{project_id}/repo/docs/governance/forecast.json"
 
 ### 1. Fetch and present team members
 
-Read the manifest, then fetch project members:
+Read the manifest, then fetch project members. The API requires an `X-Internal-Key` header. The key is available as the `INTERNAL_API_KEY` environment variable and the API base URL is in `API_BASE_URL` (defaults to `http://api:8000`).
 
 ```bash
-curl -s -H "X-Internal-Key: team-agent-internal" \
-  http://localhost:8000/projects/${PROJECT_ID}/members
+API=${API_BASE_URL:-http://api:8000}
+KEY=${INTERNAL_API_KEY:-team-agent-internal}
+curl -s -H "X-Internal-Key: $KEY" "$API/projects/${PROJECT_ID}/members"
 ```
 
 Present the members grouped by type:
